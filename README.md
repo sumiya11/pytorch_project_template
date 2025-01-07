@@ -21,7 +21,7 @@ To run inference, we require two pretrained models:
 - Run the following command to download the model from the lipreading repository (https://github.com/mpc001/Lipreading_using_Temporal_Convolutional_Networks) 
 
 ```
-wget -O lrw_resnet18_mstcn_video.pth https://drive.usercontent.google.com/download?id=1vqMpxZ5LzJjg50HlZdj_QFJGm2gQmDUD&export=download&authuser=0&confirm=t&uuid=42e09d57-a34f-4548-8fe1-f1db4faf63c5&at=AENtkXZNrbBIkwkPGA5bAJPli6y4%3A1732306916817
+wget -O lrw_resnet18_mstcn_video.pth "https://drive.usercontent.google.com/download?id=1vqMpxZ5LzJjg50HlZdj_QFJGm2gQmDUD&export=download&authuser=0&confirm=t&uuid=42e09d57-a34f-4548-8fe1-f1db4faf63c5&at=AENtkXZNrbBIkwkPGA5bAJPli6y4%3A1732306916817"
 ```
 
 Or get it from
