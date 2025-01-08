@@ -39,7 +39,7 @@ or get it from https://drive.google.com/file/d/1tvGpKinspMGntYA7bTMaQu4OvckEu0O9
 
 The project comes with a pretrained model.
 
-- Run the following command to run inference (Example dataset is given in `dataset/`):
+- Run the following command to run inference (**Example dataset is given in `dataset/`**):
 
 ```
 python inference.py --config-name inference2 dataloader.batch_size=1 inferencer.from_pretrained="model_best.pth" model.video.path="lrw_resnet18_mstcn_video.pth" datasets.test.dir="PATH/TO/DLA_DATASET"
