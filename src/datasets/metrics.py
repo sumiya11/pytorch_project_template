@@ -20,21 +20,19 @@ class MetricsCalculatorDataset(Dataset):
         """
         self.dir_separated = dir_separated
         self.dir_ground_truth = dir_ground_truth
-        self.files = {
-            "unmixed": os.listdir(Path(dir_separated)),
-        }
+        self.files = os.listdir(Path(dir_separated) / 's1')
         self.transform = transform
         print("Transform MetricsCalculatorDataset: ", transform)
 
         self.filter_index()
 
     def filter_index(self):
-        files = {"unmixed": []}
-        for file in tqdm(self.files["unmixed"], desc="Filter data"):
-            speaker1, speaker2 = file.split(".")[0].split("_")[1:]
+        files = []
+        for file in tqdm(self.files, desc="Filter data"):
+            id = file.split(".")[0]
             try:
                 format = "wav"
-                name = f"{speaker1}_{speaker2}.{format}"
+                name = f"{id}.{format}"
 
                 signal1, sr1 = torchaudio.load(
                     Path(self.dir_ground_truth) / "s1" / name, format=format
@@ -43,27 +41,27 @@ class MetricsCalculatorDataset(Dataset):
                     Path(self.dir_ground_truth) / "s2" / name, format=format
                 )
 
-                files["unmixed"].append(file)
+                files.append(file)
             except:
                 print(f"Cannot locate the Ground Truth for {file}")
         self.files = files
 
     def __len__(self):
-        return len(self.files["unmixed"])
+        return len(self.files)
 
     def __getitem__(self, idx):
         if torch.is_tensor(idx):
             idx = idx.tolist()
 
-        speaker1, speaker2 = self.files["unmixed"][idx].split(".")[0].split("_")[1:]
-        # format = self.files["mix"][idx].split(".")[-1]
+        speaker1, speaker2 = self.files[idx].split(".")[0].split("_")
 
         sample = {
             "speaker1": speaker1,
             "speaker2": speaker2,
         }
-        unmixed = torch.load(Path(self.dir_separated) / self.files["unmixed"][idx])
-        unmixed = unmixed["unmixed"][0, ...]
+        unmixed1, sr0 = torchaudio.load(Path(self.dir_separated) / "s1" / self.files[idx], format="wav")
+        unmixed2, sr0 = torchaudio.load(Path(self.dir_separated) / "s2" / self.files[idx], format="wav")
+        unmixed = torch.stack((unmixed1, unmixed2), dim=1).squeeze(0)
 
         format = "wav"
         name = f"{speaker1}_{speaker2}.{format}"

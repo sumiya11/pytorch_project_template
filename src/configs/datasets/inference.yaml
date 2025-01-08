@@ -1,0 +1,4 @@
+_target_: src.datasets.AudioVideoDataset
+dir: C:\Downloads_2\dla_dataset\
+mode: test
+transform: ${transforms.instance_transforms.test}

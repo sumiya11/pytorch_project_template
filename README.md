@@ -39,27 +39,19 @@ or get it from https://drive.google.com/file/d/1tvGpKinspMGntYA7bTMaQu4OvckEu0O9
 
 The project comes with a pretrained model.
 
-- Run the following command to run inference:
+- Run the following command to run inference (Example dataset is given in `dataset/`):
 
 ```
-python inference.py --config-name inference2 dataloader.batch_size=1 inferencer.from_pretrained="model_best.pth" model.video.path="lrw_resnet18_mstcn_video.pth" dataset.train.dir="PATH/TO/DLA_DATASET" dataset.val.dir="PATH/TO/DLA_DATASET" dataset.test.dir="PATH/TO/DLA_DATASET"
+python inference.py --config-name inference2 dataloader.batch_size=1 inferencer.from_pretrained="model_best.pth" model.video.path="lrw_resnet18_mstcn_video.pth" datasets.test.dir="PATH/TO/DLA_DATASET"
 ```
 
-Inference results are saved in `data/saved/example/test/`.
+Inference results are saved in `data/saved/example/s1/` and `data/saved/example/s2/`.
 
 - After inference, run the following command to calculate metrics:
 
 ```
-python metrics.py --config-name metrics
+python metrics.py --config-name metrics dataloader.batch_size=1 datasets.metrics.dir_separated="data/saved/example/" datasets.metrics.dir_ground_truth="PATH/TO/DLA_DATASET/audio"
 ```
-
-- (Optional) After inference, run the following command to produce output wav files:
-
-```
-python translate.py data/saved/example/test/ PATH/TO/OUTPUT/WAV
-```
-
-The maximal memory usage on GPU is around 1 GB.
 
 <!-- ## About
 

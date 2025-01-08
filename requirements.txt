@@ -12,6 +12,7 @@ pyloudnorm
 torchaudio
 soundfile
 pystoi
+opencv-python
 
 black
 isort

@@ -77,7 +77,7 @@ class SomeMetric(BaseMetric):
 
         y_batch = torch.stack((signal1, signal2), dim=1).squeeze(2)
 
-        return self.metric(unmixed[:, 0:1, :], y_batch[:, 0:1, :])
+        return self.metric(unmixed, y_batch)
 
 
 # class PESQMetric(BaseMetric):

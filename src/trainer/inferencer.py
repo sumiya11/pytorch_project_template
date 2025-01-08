@@ -1,4 +1,5 @@
 import torch
+import torchaudio
 from tqdm.auto import tqdm
 
 from src.metrics.tracker import MetricTracker
@@ -143,9 +144,9 @@ class Inferencer(BaseTrainer):
             # label = batch["labels"][i].clone()
             # pred_label = logits.argmax(dim=-1)
 
-            output_id = (
-                str(int(batch["speaker1"][i])) + "_" + str(int(batch["speaker2"][i]))
-            )
+            assert batch_size == 1
+
+            output_id = str(batch["speaker1"][i]) + "_" + str(batch["speaker2"][i])
 
             outputs = {
                 "unmixed": batch["unmixed"].clone(),
@@ -155,7 +156,9 @@ class Inferencer(BaseTrainer):
 
             if self.save_path is not None:
                 # you can use safetensors or other lib here
-                torch.save(outputs, self.save_path / part / f"output_{output_id}.pth")
+                unmixed = outputs["unmixed"].cpu()
+                torchaudio.save(self.save_path / "s1" / f"{output_id}.wav", unmixed[0, 0:1, :], batch["sr"][0])
+                torchaudio.save(self.save_path / "s2" / f"{output_id}.wav", unmixed[0, 1:2, :], batch["sr"][0])
 
         return batch
 
@@ -177,7 +180,8 @@ class Inferencer(BaseTrainer):
 
         # create Save dir
         if self.save_path is not None:
-            (self.save_path / part).mkdir(exist_ok=True, parents=True)
+            (self.save_path / 's1').mkdir(exist_ok=True, parents=True)
+            (self.save_path / 's2').mkdir(exist_ok=True, parents=True)
 
         with torch.no_grad():
             for batch_idx, batch in tqdm(

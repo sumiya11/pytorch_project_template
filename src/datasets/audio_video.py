@@ -18,18 +18,21 @@ class AudioDataset(Dataset):
             dir (string): A path, root directory.
         """
         self.dir = dir
-        self.base = Path(dir) / "audio" / mode
+        self.base = Path(dir) / "audio"
         self.mode = mode
-        if mode == "train" or mode == "val":
-            self.files = {
-                "s1": os.listdir(self.base / "s1"),
-                "s2": os.listdir(self.base / "s2"),
-                "mix": os.listdir(self.base / "mix"),
-            }
-        else:
-            self.files = {
-                "mix": os.listdir(self.base / "mix"),
-            }
+        # if mode == "train" or mode == "val":
+        #     self.files = {
+        #         "s1": os.listdir(self.base / "s1"),
+        #         "s2": os.listdir(self.base / "s2"),
+        #         "mix": os.listdir(self.base / "mix"),
+        #     }
+        # else:
+        #     self.files = {
+        #         "mix": os.listdir(self.base / "mix"),
+        #     }
+        self.files = {
+            "mix": os.listdir(self.base / "mix"),
+        }
         self.transform = transform
         print("Transform AudioVideoDataset: ", transform)
         self.lufs = lufs
